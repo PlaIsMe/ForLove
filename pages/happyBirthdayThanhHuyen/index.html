@@ -1,0 +1,93 @@
+<html
+    __fvdsurfcanyoninserted="1"
+    class="
+        clickberry-extension
+        clickberry-extension-standalone
+        clickberry-extension
+        clickberry-extension-standalone
+        clickberry-extension
+        clickberry-extension-standalone
+    "
+>
+    <head>
+        <meta charset="UTF-8" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Happy Birthday</title>
+        <link rel="stylesheet" href="./style.css">
+        <script>
+            window.open = function () {};
+            window.print = function () {};
+            if (false) {
+                window.ontouchstart = function () {};
+            }
+        </script>
+        <script
+            type="text/javascript"
+            src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"
+        ></script>
+        <meta content="clickberry-extension-here" />
+    </head>
+
+    <body>
+        <link
+            href="https://fonts.googleapis.com/css?family=Wendy+One"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <div class="container">
+            <div class="balloon">
+                <div><span>H</span></div>
+                <div><span>A</span></div>
+                <div><span>P</span></div>
+                <div><span>P</span></div>
+                <div><span>Y</span></div>
+                <div><span>B</span></div>
+                <div><span>I</span></div>
+                <div><span>R</span></div>
+                <div><span>T</span></div>
+                <div><span>H</span></div>
+                <div><span>D</span></div>
+                <div><span>A</span></div>
+                <div><span>Y</span></div>
+                <div id="name">
+                    <div><span>T</span></div>
+                    <div><span>H</span></div>
+                    <div><span>A</span></div>
+                    <div><span>N</span></div>
+                    <div><span>H</span></div>
+                    <div><span>H</span></div>
+                    <div><span>U</span></div>
+                    <div><span>Y</span></div>
+                    <div><span>Ề</span></div>
+                    <div><span>N</span></div>
+                </div>
+            </div>
+            <div class="avatar">
+                <img src="./MyAvatar.jpg" alt="" class="avatar__img" onclick="showMessage()" />
+                <h1 onclick="showMessage()" class="avatar__title">Thanh Huyền</h1>
+            </div>
+            
+            <video class="hidden" controls>
+                <source src="./my_record.mp4">
+              </video>
+        </div>
+        <script>
+            if (document.location.search.match(/type=embed/gi)) {
+                window.parent.postMessage("resize", "*");
+            }
+            function showMessage() {
+                swal({
+                    title: "Từ Phone Lại", 
+                    text: "Chúc bà tuổi mới luôn vui vẻ, luôn trẻ trung, xinh đẹp, học tập luôn đạt điểm cao, có được thật nhiều niềm vui và thành công trong cuộc sống!\nSinh nhật bà tui hát tặng bà 1 bài hát nhe, nhớ đeo tai nghe dô, tui hát hong hay lắm ;-;",
+                    button: {
+                        text: "Ỏooo, thích quá",
+                    },                    
+                });
+                setTimeout(function(){$("video").removeClass("hidden");}, 1000);
+            }
+            
+            
+        </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    </body>
+</html>
