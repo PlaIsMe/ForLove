@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PL Valentine Card</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./flower.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Mouse enter & leave animation
+            let animationEnabled = true;
+
+            $('.container').mouseenter(function () {
+                if (animationEnabled) {
+                    $('.card').stop().animate({ top: '-150px' }, 'slow');
+                }
+            }).mouseleave(function () {
+                if (animationEnabled) {
+                    $('.card').stop().animate({ top: 0 }, 'slow');
+                }
+            });
+
+            $('.wish').hide();
+            $('#flower').hide();
+
+            // On card click: Hide elements & disable animation
+            $('.card').click(function () {
+                animationEnabled = false; // Disable animation
+                $('#flower').show();
+                $('.wish').show();
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+        <div><span class="dot"></span></div>
+    </div>
+
+    <div class="container">
+        <div class="valentines">
+            <div class="envelope"></div>
+            <div class="front"></div>
+            <div class="card">
+                <div class="text"></br>TH's Valentine card 💖</div>
+                <div class="wish text-2"></br>On this Valentine's Day, I give you a flower that I coded myself 🌹</div>
+                <div class="wish text-3"></br>May our love always "run" smoothly and never encounter a syntax error! ❤️</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="flower" class="flowers">
+        <div class="flower flower--2">
+            <div class="flower__leafs flower__leafs--2">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+
+                <div class="flower__light flower__light--1"></div>
+                <div class="flower__light flower__light--2"></div>
+                <div class="flower__light flower__light--3"></div>
+                <div class="flower__light flower__light--4"></div>
+                <div class="flower__light flower__light--5"></div>
+                <div class="flower__light flower__light--6"></div>
+                <div class="flower__light flower__light--7"></div>
+                <div class="flower__light flower__light--8"></div>
+
+            </div>
+            <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="night"></div>
+    <div class="flowers">
+        <div class="flower flower--2">
+            <div class="flower__leafs flower__leafs--2">
+                <div class="flower__leaf flower__leaf--1"></div>
+                <div class="flower__leaf flower__leaf--2"></div>
+                <div class="flower__leaf flower__leaf--3"></div>
+
+                <div class="flower__light flower__light--1"></div>
+                <div class="flower__light flower__light--2"></div>
+                <div class="flower__light flower__light--3"></div>
+                <div class="flower__light flower__light--4"></div>
+                <div class="flower__light flower__light--5"></div>
+                <div class="flower__light flower__light--6"></div>
+                <div class="flower__light flower__light--7"></div>
+                <div class="flower__light flower__light--8"></div>
+
+            </div>
+            <div class="flower__line">
+                <div class="flower__line__leaf flower__line__leaf--1"></div>
+                <div class="flower__line__leaf flower__line__leaf--3"></div>
+            </div>
+        </div>
+    </div> -->
+
+</body>
+
+</html>
