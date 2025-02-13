@@ -240,23 +240,23 @@ body {
 
 .text-2 {
     position: absolute;
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'Dancing Script';
     font-size: 24px;
     text-align: center;
     line-height: 25px;
     top: 60px;
-    left: 15px;
+    left: 25px;
     color: #003049;
     width: 320px;
 }
 
 .text-3 {
     position: absolute;
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'Dancing Script';
     font-size: 24px;
     text-align: center;
     line-height: 25px;
-    top: 120px;
+    top: 130px;
     left: 25px;
     color: #003049;
     width: 320px;
