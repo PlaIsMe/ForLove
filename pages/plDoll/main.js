@@ -22,7 +22,8 @@ function playRandomSound() {
 }
 
 Main.render = function () {
-    const { Engine, Render, Runner, Bodies, Composite, Constraint, World, Mouse, MouseConstraint, Events } = Matter;
+    const { Engine, Render, Runner, Bodies, Composite, Constraint,
+         World, Mouse, MouseConstraint, Events } = Matter;
 
     // create engine
     const engine = Engine.create();
