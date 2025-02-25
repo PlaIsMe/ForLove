@@ -2,6 +2,7 @@ var Main = Main || {};
 
 var isHurt = false;
 var hurt = 0;
+var isHoldMode = false;
 
 function playRandomSound() {
     var normalAudio = new Audio("sounds/normal.m4a");
@@ -174,7 +175,7 @@ Main.render = function () {
 
     World.add(world, [leftWall, rightWall]);
 
-    const ground = Bodies.rectangle(width/2, height, width, 100, { 
+    const ground = Bodies.rectangle(width/2, height - 30, width, 100, { 
         isStatic: true,
         render: {
             sprite: {
@@ -191,9 +192,23 @@ Main.render = function () {
             }
         }
     });
-    
-        
+
     World.add(world, [ground, top]);
+
+    const toggleModeButton = Bodies.rectangle(width - 50, height - 40, 30, 30, { 
+        isStatic: true,
+        render: {
+            fillStyle: 'blue',
+            sprite: {
+                texture: 'images/hold-disabled.png',
+                xScale: 0.1,
+                yScale: 0.1
+            }
+        }
+    });
+
+    World.add(engine.world, [toggleModeButton]);
+
 
     // Enable Mouse Interaction
     const mouse = Mouse.create(render.canvas);
@@ -207,6 +222,9 @@ Main.render = function () {
     World.add(world, mouseConstraint);
 
     function addParticle(x, y) {
+        if (isHoldMode) {
+            return;
+        }
         var particle = Matter.Bodies.circle(x, y, 5, {
             isSensor: true,
             isStatic: true,
@@ -231,6 +249,8 @@ Main.render = function () {
     var hitTheTop = false;
     var hitTheLeft = false;
     var hitTheRight = false;
+    var holding = false;
+    var dropping = false;
 
     Matter.Events.on(mouseConstraint, "mousedown", function (event) {
         var mousePos = event.mouse.position;
@@ -244,9 +264,13 @@ Main.render = function () {
             { part: leftLeg, name: "Left Leg" },
             { part: rightLeg, name: "Right Leg" }
         ];
-    
+        
         bodyParts.forEach(({ part, name }) => {
             if (Matter.Bounds.contains(part.bounds, mousePos)) {
+                if (isHoldMode) {
+                    holding = true;
+                    return;
+                }
                 hitByMouse = true;
                 head.render.sprite.texture = "images/cry.png";
                 Matter.Body.applyForce(part, part.position, {
@@ -264,9 +288,18 @@ Main.render = function () {
         });
     });
 
+    Matter.Events.on(mouseConstraint, "mouseup", function (event) {
+        if (!holding) return;
+        dropping = true;
+        setTimeout(() => {
+            holding = false;
+            dropping = false;
+        }, 2000);
+    });
+
     Events.on(engine, "collisionStart", (event) => {
         event.pairs.forEach((pair) => {
-            if (pair.bodyB === top && !hitTheTop && hitByMouse) {
+            if (pair.bodyB === top && !hitTheTop && (hitByMouse || holding)) {
                 hitTheTop = true;
                 head.render.sprite.texture = "images/cry.png";
                 playRandomSound();
@@ -275,7 +308,7 @@ Main.render = function () {
                     head.render.sprite.texture = "images/normal.png";
                 }, 1000);
             }
-            if (pair.bodyB === ground && !hitTheGround && hitByMouse) {
+            if (pair.bodyB === ground && !hitTheGround && (hitByMouse || dropping)) {
                 hitTheGround = true;
                 head.render.sprite.texture = "images/cry.png";
                 playRandomSound();
@@ -284,7 +317,7 @@ Main.render = function () {
                     head.render.sprite.texture = "images/normal.png";
                 }, 1000);
             }
-            if (pair.bodyB === leftWall && !hitTheLeft && hitByMouse) {
+            if (pair.bodyB === leftWall && !hitTheLeft && (hitByMouse || holding)) {
                 hitTheLeft = true;
                 head.render.sprite.texture = "images/cry.png";
                 playRandomSound();
@@ -293,7 +326,7 @@ Main.render = function () {
                     head.render.sprite.texture = "images/normal.png";
                 }, 1000);
             }
-            if (pair.bodyB === rightWall && !hitTheRight && hitByMouse) {
+            if (pair.bodyB === rightWall && !hitTheRight && (hitByMouse || holding)) {
                 hitTheRight = true;
                 head.render.sprite.texture = "images/cry.png";
                 playRandomSound();
@@ -303,5 +336,16 @@ Main.render = function () {
                 }, 1000);
             }
         });
+    });
+
+    Matter.Events.on(mouseConstraint, "mousedown", function(event) {
+        const mousePos = event.mouse.position;
+        if (Matter.Bounds.contains(toggleModeButton.bounds, mousePos)) {
+            isHoldMode = !isHoldMode;
+            toggleModeButton.render.sprite.texture = isHoldMode 
+            ? "images/hold-enabled.png" 
+            : "images/hold-disabled.png";
+            mouseConstraint.constraint.stiffness = isHoldMode ? 1 : 0;
+        }
     });
 };
