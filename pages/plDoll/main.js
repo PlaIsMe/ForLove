@@ -6,7 +6,7 @@ var isHoldMode = false;
 
 function playRandomSound() {
     var normalAudio = new Audio("sounds/normal.m4a");
-    var hurtAudio = new Audio("sounds/veryhurt.m4a");
+    var hurtAudio = new Audio("sounds/veryhurt2.m4a");
     if (!isHurt) {
         isHurt = true;
         if (hurt >= 5) {
