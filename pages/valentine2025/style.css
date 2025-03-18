@@ -163,6 +163,7 @@ body {
 
 .container {
     position: relative;
+    margin-top: 450px;
 }
 
 .valentines {
@@ -229,7 +230,7 @@ body {
 
 .text {
     position: absolute;
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'Dancing Script';
     font-size: 28px;
     text-align: center;
     line-height: 25px;

@@ -27,8 +27,8 @@
 }
 .flowers {
   position: absolute;
-  left: 56%;
-  bottom: 30%;
+  left: 54%;
+  bottom: 10%;
   transform: scale(0.9);
 }
 .flower {
