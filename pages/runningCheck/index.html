@@ -112,6 +112,26 @@
     </div>
 
     <script>
+        const auth_link = 'https://www.strava.com/oauth/token';
+        async function reAuthorize() {
+            fetch(auth_link, {
+                method: 'post',
+
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    client_id: '152487',
+                    client_secret: '766db782b11236dacb55bbccf3641c07f9832519',
+                    refresh_token: '034816147801cbd3ac423b3499e341bca5c07209',
+                    grant_type: 'refresh_token'
+
+                })
+
+            }).then(res => res.json())
+            .then(res => fetchStravaActivities(res))
+        }
 
         function renderMap(mapId, encodedPolyline) {
             const map = L.map(mapId).setView([0, 0], 13);
@@ -126,15 +146,15 @@
             map.fitBounds(polylineLayer.getBounds());
         }
 
-        async function fetchStravaActivities() {
-            const accessToken = "341826f75aee308dda0feaf7a5ce302005136b32";
+        async function fetchStravaActivities(code) {
+            console.log(code);
             const url = "https://www.strava.com/api/v3/athlete/activities";
 
             try {
                 const response = await fetch(url, {
                     method: "GET",
                     headers: {
-                        "Authorization": `Bearer ${accessToken}`
+                        "Authorization": `Bearer ${code.access_token}`
                     }
                 });
 
@@ -224,7 +244,7 @@
             return `${minutes}m ${remainingSeconds}s`;
         }
 
-        fetchStravaActivities();
+        reAuthorize();
         // renderMap("map", "upbaAkkpiS?BXHVAdBDJCRAJ@NAFBN?ZE?BHCX@PBFVH@VCPB\\@@QCCL@Ag@CGBEAM@UDIN?j@LPFBAFB^?NBLABCVk@H@JHPAH@@B`@BPABBTBd@ADEPJM^@ND@L@LCl@Pb@Fd@BNDXBNDT@@N\\CFBJEN@|ATb@?J@RCBARN@DNL?Ff@f@b@^H@TPVZZRLP`@^JFF?JCBId@a@BKb@i@n@g@n@u@RSPWVMV]XQjAuAVQn@u@HANQFCLQHCLQDAb@m@~AuA^g@HA@GEEGAMFINoAhA@BG@@DA@I@o@l@OTURqAtA[d@QHYFIFYd@]^MTWXQRIBYRKNCH?A@BCFGBCAYRUTCHUN_@\\i@^GAOGKM?GOGa@]ICCMaAm@GE@GMKIQOOe@YOOCG{@u@CE[SEGo@k@]YGISKUYA??RPTNLBAD@HJr@p@JFf@`@Z^j@`@FN@DOBa@OM?k@GQ?]GyAQECWACB]IKBIE_@GWCkA@QECILo@?EGEW@_@Ie@Go@Ae@GE@CFC@CVIFy@CQCe@CY?ELOvAEBa@AUBM?EEGMMEWBIAa@@W?SBGCABSACBeAKGCMDQCUBEGEA");
     </script>
 </body>
