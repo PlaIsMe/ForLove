@@ -114,48 +114,11 @@
     </div>
 
     <script>
-        const oauthUrl = "http://www.strava.com/oauth/authorize?client_id=152487&response_type=code&redirect_uri=https://plaisme.github.io/ForLove/pages/runningCheck/exchange_token&approval_prompt=force&scope=activity:read";
-        let popupWindow;
-        let interval;
-        let accessToken = localStorage.getItem("access_token");
+        let accessToken = "26d6307532f56873c18c94fba611817d3644323c";
 
         window.onload = function () {
-            if (!accessToken) {
-                refreshAccessToken();
-            } else {
-                fetchStravaActivities(accessToken);
-            }
+            fetchStravaActivities(accessToken);
         };
-
-        function refreshAccessToken() {
-            popupWindow = window.open(oauthUrl, "_blank");
-            if (!popupWindow) {
-                alert("Popup blocked! Please allow popups for this site.");
-            }
-            interval = setInterval(() => {
-                try {
-                    if (popupWindow.location.pathname === "/ForLove/pages/runningCheck/exchange_token") {
-                        const urlParams = new URLSearchParams(popupWindow.location.search);
-                        const code = urlParams.get("code");
-
-                        if (code) {
-                            closePopup();
-                            authorize(code);
-                        }
-                    }
-                } catch (error) {
-                }
-
-                if (popupWindow.closed) {
-                    clearInterval(interval);
-                }
-            }, 500);
-        }
-
-        function closePopup() {
-            popupWindow.close();
-            clearInterval(interval);
-        }
 
         function renderMap(mapId, encodedPolyline) {
             const map = L.map(mapId).setView([0, 0], 13);
@@ -169,40 +132,6 @@
 
             map.fitBounds(polylineLayer.getBounds());
         }
-
-        const auth_link = 'https://www.strava.com/oauth/token';
-        async function authorize(code) {
-            console.log("Authorization Code:", code);
-            try {
-                const response = await fetch(auth_link, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        client_id: '152487',
-                        client_secret: '766db782b11236dacb55bbccf3641c07f9832519',
-                        code: code,
-                        grant_type: 'authorization_code'
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP Error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                localStorage.setItem("access_token", data.access_token);
-                fetchStravaActivities(data.access_token);
-                return data;
-
-            } catch (error) {
-                console.error("Reauthorization failed:", error);
-                return null;
-            }
-        }
-
 
         async function fetchStravaActivities(token) {
             const url = "https://www.strava.com/api/v3/athlete/activities";
@@ -220,9 +149,7 @@
                 const activities = await response.json();
                 renderActivities(activities);
                 renderMaps(activities);
-                retryCount = 0;
             } catch (error) {
-                refreshAccessToken();
             }
         }
 
