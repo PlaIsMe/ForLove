@@ -104,147 +104,208 @@
         <h2>Nhật ký chạy bộ của PL</h2>
     </div>
 
-    <div class="data">
 
+    <div class="data">
+        <button></button>
     </div>
 
     <div class="container">
+
     </div>
 
     <script>
-        const auth_link = 'https://www.strava.com/oauth/token';
-        async function reAuthorize() {
-            fetch(auth_link, {
-                method: 'post',
+        const oauthUrl = "http://www.strava.com/oauth/authorize?client_id=152487&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=activity:read";
 
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    client_id: '152487',
-                    client_secret: '766db782b11236dacb55bbccf3641c07f9832519',
-                    refresh_token: '034816147801cbd3ac423b3499e341bca5c07209',
-                    grant_type: 'refresh_token'
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get("code");
 
-                })
-
-            }).then(res => res.json())
-            .then(res => fetchStravaActivities(res))
-        }
-
-        function renderMap(mapId, encodedPolyline) {
-            const map = L.map(mapId).setView([0, 0], 13);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
-            const decodedPolyline = polyline.decode(encodedPolyline);
-            const polylineLayer = L.polyline(decodedPolyline, { color: 'red' }).addTo(map);
-
-            map.fitBounds(polylineLayer.getBounds());
-        }
-
-        async function fetchStravaActivities(code) {
-            console.log(code);
-            const url = "https://www.strava.com/api/v3/athlete/activities";
-
-            try {
-                const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${code.access_token}`
-                    }
-                });
-
-                if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
-
-                const activities = await response.json();
-                renderActivities(activities);
-                renderMaps(activities);
-            } catch (error) {
-                console.error("Error fetching activities:", error);
-            }
-        }
-
-        function formatActivityDate(activityDate) {
-            const date = new Date(activityDate);
-            const today = new Date();
-
-            if (date.toDateString() === today.toDateString()) {
-                return `Today at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`;
+            if (code) {
+                console.log("Authorization Code:", code);
             } else {
-                return date.toLocaleString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                });
+                console.log("Redirecting to Strava OAuth...");
+                window.location.href = oauthUrl;
             }
-        }
+        };
+        // function autoAuthorize() {
+        //     const authLink = "https://www.strava.com/oauth/authorize?client_id=152487&redirect_uri=http://localhost&response_type=code&scope=activity:read";
+
+        //     const authWindow = window.open(authLink, "_blank");
+        //     const checkInterval = setInterval(() => {
+        //         try {
+        //             if (authWindow.closed) {
+        //                 clearInterval(checkInterval);
+        //                 console.log("Authorization window closed.");
+        //                 getAuthCode();
+        //             }
+        //         } catch (error) {
+        //             console.error("Error checking authorization window:", error);
+        //         }
+        //     }, 1000); // Check every 1 second
+        // }
+
+        // function getAuthCode() {
+        //     const params = new URLSearchParams(window.location.search);
+        //     const authCode = params.get("code");
+
+        //     if (authCode) {
+        //         console.log("Authorization Code:", authCode);
+        //         // You can now exchange this code for an access token
+        //     } else {
+        //         console.log("No authorization code found.");
+        //     }
+        // }
+
+
+        // window.onload = () => {
+        //     console.log("Page Loaded. Checking for authorization code...");
+        //     autoAuthorize();
+            
+        //     const authCode = getAuthCode();
+        //     if (authCode) {
+        //         console.log("Authorization Code Found:", authCode);
+        //         // You can now exchange this code for an access token
+        //     } else {
+        //         console.log("No authorization code found. Redirecting to Strava...");
+        //         autoAuthorize(); // Automatically trigger authorization
+        //     }
+        // };
+
+
+        // const auth_link = 'https://www.strava.com/oauth/token';
+        // async function reAuthorize() {
+        //     fetch(auth_link, {
+        //         method: 'post',
+
+        //         headers: {
+        //             'Accept': 'application/json, text/plain, */*',
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             client_id: '152487',
+        //             client_secret: '766db782b11236dacb55bbccf3641c07f9832519',
+        //             refresh_token: '034816147801cbd3ac423b3499e341bca5c07209',
+        //             grant_type: 'refresh_token'
+
+        //         })
+
+        //     }).then(res => res.json())
+        //     .then(res => fetchStravaActivities(res))
+        // }
+
+        // function renderMap(mapId, encodedPolyline) {
+        //     const map = L.map(mapId).setView([0, 0], 13);
+
+        //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //         attribution: '&copy; OpenStreetMap contributors'
+        //     }).addTo(map);
+
+        //     const decodedPolyline = polyline.decode(encodedPolyline);
+        //     const polylineLayer = L.polyline(decodedPolyline, { color: 'red' }).addTo(map);
+
+        //     map.fitBounds(polylineLayer.getBounds());
+        // }
+
+        // async function fetchStravaActivities(code) {
+        //     console.log(code)
+        //     const url = "https://www.strava.com/api/v3/athlete/activities";
+
+        //     try {
+        //         const response = await fetch(url, {
+        //             method: "GET",
+        //             headers: {
+        //                 "Authorization": `Bearer ${code.access_token}`
+        //             }
+        //         });
+
+        //         if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+
+        //         const activities = await response.json();
+        //         renderActivities(activities);
+        //         renderMaps(activities);
+        //     } catch (error) {
+        //         console.error("Error fetching activities:", error);
+        //     }
+        // }
+
+        // function formatActivityDate(activityDate) {
+        //     const date = new Date(activityDate);
+        //     const today = new Date();
+
+        //     if (date.toDateString() === today.toDateString()) {
+        //         return `Today at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`;
+        //     } else {
+        //         return date.toLocaleString('en-US', {
+        //             weekday: 'long',
+        //             year: 'numeric',
+        //             month: 'long',
+        //             day: 'numeric',
+        //             hour: '2-digit',
+        //             minute: '2-digit',
+        //             hour12: true
+        //         });
+        //     }
+        // }
 
 
 
-        function renderMaps(activities) {
-            activities.forEach(activity => {
-                renderMap(`map-${activity.id}`, activity.map.summary_polyline)
-            });
-        }
+        // function renderMaps(activities) {
+        //     activities.forEach(activity => {
+        //         renderMap(`map-${activity.id}`, activity.map.summary_polyline)
+        //     });
+        // }
 
-        function renderActivities(activities) {
-            const container = document.querySelector(".data");
-            container.innerHTML = "";
+        // function renderActivities(activities) {
+        //     const container = document.querySelector(".data");
+        //     container.innerHTML = "";
 
-            activities.forEach(activity => {
-                const distanceKm = (activity.distance / 1000).toFixed(2);
-                const pace = calculatePace(activity.moving_time, activity.distance);
-                const duration = formatTime(activity.moving_time);
-                const dateTime = formatActivityDate(activity.start_date_local)
+        //     activities.forEach(activity => {
+        //         const distanceKm = (activity.distance / 1000).toFixed(2);
+        //         const pace = calculatePace(activity.moving_time, activity.distance);
+        //         const duration = formatTime(activity.moving_time);
+        //         const dateTime = formatActivityDate(activity.start_date_local)
 
-                const location = activity.location_country || "Unknown Location";
+        //         const location = activity.location_country || "Unknown Location";
 
-                const activityHTML = `
-            <div class="container">
-                <div class="info">
-                    <h2>${activity.name}</h2>
-                    <p>${dateTime} · ${location}</p>
-                </div>
-                <div class="stats">
-                    <div><strong>Quãng đường</strong><p>${distanceKm} km</p></div>
-                    <div><strong>Tốc độ</strong><p>${pace} /km</p></div>
-                    <div><strong>Thời gian</strong><p>${duration}</p></div>
-                </div>
-                <div id="map-${activity.id}" class="map-container">
-                </div>
-            </div>
-        `;
+        //         const activityHTML = `
+        //     <div class="container">
+        //         <div class="info">
+        //             <h2>${activity.name}</h2>
+        //             <p>${dateTime} · ${location}</p>
+        //         </div>
+        //         <div class="stats">
+        //             <div><strong>Quãng đường</strong><p>${distanceKm} km</p></div>
+        //             <div><strong>Tốc độ</strong><p>${pace} /km</p></div>
+        //             <div><strong>Thời gian</strong><p>${duration}</p></div>
+        //         </div>
+        //         <div id="map-${activity.id}" class="map-container">
+        //         </div>
+        //     </div>
+        // `;
 
-                const activityElement = document.createElement("div");
-                activityElement.classList.add("activity-item");
-                activityElement.innerHTML = activityHTML;
-                container.appendChild(activityElement);
-            });
-        }
+        //         const activityElement = document.createElement("div");
+        //         activityElement.classList.add("activity-item");
+        //         activityElement.innerHTML = activityHTML;
+        //         container.appendChild(activityElement);
+        //     });
+        // }
 
 
-        function calculatePace(timeInSeconds, distanceInMeters) {
-            const paceInSeconds = timeInSeconds / (distanceInMeters / 1000);
-            const minutes = Math.floor(paceInSeconds / 60);
-            const seconds = Math.floor(paceInSeconds % 60);
-            return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-        }
+        // function calculatePace(timeInSeconds, distanceInMeters) {
+        //     const paceInSeconds = timeInSeconds / (distanceInMeters / 1000);
+        //     const minutes = Math.floor(paceInSeconds / 60);
+        //     const seconds = Math.floor(paceInSeconds % 60);
+        //     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+        // }
 
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${minutes}m ${remainingSeconds}s`;
-        }
+        // function formatTime(seconds) {
+        //     const minutes = Math.floor(seconds / 60);
+        //     const remainingSeconds = seconds % 60;
+        //     return `${minutes}m ${remainingSeconds}s`;
+        // }
 
-        reAuthorize();
+        // autoAuthorize();
+        // reAuthorize();
         // renderMap("map", "upbaAkkpiS?BXHVAdBDJCRAJ@NAFBN?ZE?BHCX@PBFVH@VCPB\\@@QCCL@Ag@CGBEAM@UDIN?j@LPFBAFB^?NBLABCVk@H@JHPAH@@B`@BPABBTBd@ADEPJM^@ND@L@LCl@Pb@Fd@BNDXBNDT@@N\\CFBJEN@|ATb@?J@RCBARN@DNL?Ff@f@b@^H@TPVZZRLP`@^JFF?JCBId@a@BKb@i@n@g@n@u@RSPWVMV]XQjAuAVQn@u@HANQFCLQHCLQDAb@m@~AuA^g@HA@GEEGAMFINoAhA@BG@@DA@I@o@l@OTURqAtA[d@QHYFIFYd@]^MTWXQRIBYRKNCH?A@BCFGBCAYRUTCHUN_@\\i@^GAOGKM?GOGa@]ICCMaAm@GE@GMKIQOOe@YOOCG{@u@CE[SEGo@k@]YGISKUYA??RPTNLBAD@HJr@p@JFf@`@Z^j@`@FN@DOBa@OM?k@GQ?]GyAQECWACB]IKBIE_@GWCkA@QECILo@?EGEW@_@Ie@Go@Ae@GE@CFC@CVIFy@CQCe@CY?ELOvAEBa@AUBM?EEGMMEWBIAa@@W?SBGCABSACBeAKGCMDQCUBEGEA");
     </script>
 </body>
