@@ -118,8 +118,6 @@
         let popupWindow;
         let interval;
         let accessToken = localStorage.getItem("access_token");
-        let retryCount = 0;
-        const maxRetries = 3;
 
         window.onload = function () {
             if (!accessToken) {
@@ -201,7 +199,6 @@
 
             } catch (error) {
                 console.error("Reauthorization failed:", error);
-
                 return null;
             }
         }
