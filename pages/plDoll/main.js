@@ -34,6 +34,7 @@ Main.render = function () {
     const gameContainer = document.getElementById("game-container");
     const width = gameContainer.clientWidth;
     const height = gameContainer.clientHeight;
+    const startPosPL = 3*width / 4;
     const render = Render.create({
         element: gameContainer,
         engine: engine,
@@ -49,7 +50,7 @@ Main.render = function () {
     const runner = Runner.create();
     Runner.run(runner, engine);
 
-    const head = Bodies.circle(width / 2, height / 2, 80, { 
+    const head = Bodies.circle(startPosPL, height / 2, 80, { 
         restitution: 0.5,
         render: {
             sprite: {
@@ -59,7 +60,7 @@ Main.render = function () {
             }
         }
     });
-    const body = Bodies.rectangle(width / 2, height / 2 + 80, 50, 80, { 
+    const body = Bodies.rectangle(startPosPL, height / 2 + 80, 50, 80, { 
         restitution: 0.5,
         render: {
             sprite: {
@@ -69,7 +70,7 @@ Main.render = function () {
             }
         }
     });
-    const leftArm = Bodies.rectangle(width / 2 - 30, height / 2 + 80, 60, 15, { 
+    const leftArm = Bodies.rectangle(startPosPL - 30, height / 2 + 80, 60, 15, { 
         restitution: 0.5,
         render: {
             sprite: {
@@ -79,7 +80,7 @@ Main.render = function () {
             }
         }
     });
-    const rightArm = Bodies.rectangle(width / 2 + 30, height / 2 + 80, 60, 15, { 
+    const rightArm = Bodies.rectangle(startPosPL + 30, height / 2 + 80, 60, 15, { 
         restitution: 0.5,
         render: {
             sprite: {
@@ -89,7 +90,7 @@ Main.render = function () {
             }
         }
     });
-    const leftLeg = Bodies.rectangle(width / 2 - 10, height / 2 + 160, 20, 80, { 
+    const leftLeg = Bodies.rectangle(startPosPL - 10, height / 2 + 160, 20, 80, { 
         restitution: 0.5,
         render: {
             sprite: {
@@ -99,7 +100,7 @@ Main.render = function () {
             }
         }
     });
-    const rightLeg = Bodies.rectangle(width / 2 + 10, height / 2 + 160, 20, 80, { 
+    const rightLeg = Bodies.rectangle(startPosPL + 10, height / 2 + 160, 20, 80, { 
         restitution: 0.5,
         render: {
             sprite: {
@@ -159,9 +160,124 @@ Main.render = function () {
         stiffness: 1.0, 
         render: { visible: false } 
     });
+
+    const startPosTH = width / 4;
+
+    const headTH = Bodies.circle(startPosTH, height / 2, 80, { 
+        restitution: 0.5,
+        render: {
+            sprite: {
+                texture: 'images/headTH.png',
+                xScale: 0.45,
+                yScale: 0.45,
+            }
+        }
+    });
+    const bodyTH = Bodies.rectangle(startPosTH, height, 50, 80, { 
+        restitution: 0.5,
+        render: {
+            sprite: {
+                texture: 'images/bodyTH.png',
+                xScale: 0.4,
+                yScale: 0.4,
+            }
+        }
+    });
+    const leftArmTH = Bodies.rectangle(startPosTH - 30, height / 2 + 80, 60, 15, { 
+        restitution: 0.5,
+        render: {
+            sprite: {
+                texture: 'images/arm.png',
+                xScale: 0.3,
+                yScale: 0.3,
+            }
+        }
+    });
+    const rightArmTH = Bodies.rectangle(startPosTH + 30, height / 2 + 80, 60, 15, { 
+        restitution: 0.5,
+        render: {
+            sprite: {
+                texture: 'images/arm.png',
+                xScale: 0.3,
+                yScale: 0.3,
+            }
+        }
+    });
+    const leftLegTH = Bodies.rectangle(startPosTH - 10, height / 2 + 160, 20, 80, { 
+        restitution: 0.5,
+        render: {
+            sprite: {
+                texture: 'images/legTH.png',
+                xScale: 0.3,
+                yScale: 0.3,
+            }
+        }
+    });
+    const rightLegTH = Bodies.rectangle(startPosTH + 10, height / 2 + 160, 20, 80, { 
+        restitution: 0.5,
+        render: {
+            sprite: {
+                texture: 'images/legTH.png',
+                xScale: 0.3,
+                yScale: 0.3,
+            }
+        }
+    });
+
+    const neckTH = Constraint.create({ 
+        bodyA: headTH, 
+        bodyB: bodyTH, 
+        pointA: { x: 0, y: 90 }, 
+        pointB: { x: 0, y: -30 },
+        length: 5, 
+        stiffness: 1.0, 
+        render: { visible: false } 
+    });
+    
+    const leftShoulderTH = Constraint.create({ 
+        bodyA: bodyTH, 
+        bodyB: leftArmTH, 
+        pointA: { x: -25, y: -25 }, 
+        pointB: { x: 25, y: 0 }, 
+        length: 5, 
+        stiffness: 1.0, 
+        render: { visible: false } 
+    });
+    
+    const rightShoulderTH = Constraint.create({ 
+        bodyA: bodyTH, 
+        bodyB: rightArmTH, 
+        pointA: { x: 25, y: -25 }, 
+        pointB: { x: -25, y: 0 }, 
+        length: 5, 
+        stiffness: 1.0, 
+        render: { visible: false } 
+    });
+    
+    const leftHipTH = Constraint.create({ 
+        bodyA: bodyTH, 
+        bodyB: leftLegTH, 
+        pointA: { x: -15, y: 50 }, 
+        pointB: { x: 0, y: -25 }, 
+        length: 5, 
+        stiffness: 1.0, 
+        render: { visible: false } 
+    });
+    
+    const rightHipTH = Constraint.create({ 
+        bodyA: bodyTH, 
+        bodyB: rightLegTH, 
+        pointA: { x: 15, y: 50 }, 
+        pointB: { x: 0, y: -25 }, 
+        length: 5, 
+        stiffness: 1.0, 
+        render: { visible: false } 
+    });
+    
     
     // Add everything to the world
     Composite.add(world, [leftArm, rightArm, leftLeg, rightLeg, body, head, neck, leftShoulder, rightShoulder, leftHip, rightHip]);
+    Composite.add(world, [leftArmTH, rightArmTH, leftLegTH, rightLegTH, bodyTH, headTH, neckTH, leftShoulderTH, rightShoulderTH, leftHipTH, rightHipTH]);
 
     const leftWall = Bodies.rectangle(0, height / 2, 10, height, { 
         isStatic: true, 
