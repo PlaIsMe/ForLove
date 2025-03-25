@@ -300,7 +300,7 @@ Main.render = function () {
         }
     });
 
-    const top = Bodies.rectangle(width/2, 0, width, 100, { 
+    const top = Bodies.rectangle(width/2, 0, width, 0, { 
         isStatic: true,
         render: {
             sprite: {
