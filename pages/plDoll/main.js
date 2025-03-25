@@ -2,7 +2,7 @@ var Main = Main || {};
 
 var isHurt = false;
 var hurt = 0;
-var isHoldMode = false;
+var isHoldMode = true;
 
 function playRandomSound() {
     var normalAudio = new Audio("sounds/normal.m4a");
@@ -454,14 +454,17 @@ Main.render = function () {
         });
     });
 
-    Matter.Events.on(mouseConstraint, "mousedown", function(event) {
-        const mousePos = event.mouse.position;
-        if (Matter.Bounds.contains(toggleModeButton.bounds, mousePos)) {
-            isHoldMode = !isHoldMode;
-            toggleModeButton.render.sprite.texture = isHoldMode 
-            ? "images/hold-enabled.png" 
-            : "images/hold-disabled.png";
-            mouseConstraint.constraint.stiffness = isHoldMode ? 1 : 0;
-        }
-    });
+    // Matter.Events.on(mouseConstraint, "mousedown", function(event) {
+    //     const mousePos = event.mouse.position;
+    //     if (Matter.Bounds.contains(toggleModeButton.bounds, mousePos)) {
+    //         isHoldMode = !isHoldMode;
+    //         toggleModeButton.render.sprite.texture = isHoldMode 
+    //         ? "images/hold-enabled.png" 
+    //         : "images/hold-disabled.png";
+    //         mouseConstraint.constraint.stiffness = isHoldMode ? 1 : 0;
+    //     }
+    // });
+
+    toggleModeButton.render.sprite.texture = "images/hold-enabled.png";
+    mouseConstraint.constraint.stiffness = isHoldMode ? 1 : 0;
 };
